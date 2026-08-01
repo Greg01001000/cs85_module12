@@ -30,6 +30,8 @@ class AiContentController extends Controller
             return view('ai_form', [
                 'output' => $output,
                 'title'  => $validated['title'],
+                'type'   => $validated['type'],
+                'tone'   => $validated['tone'],
             ]);
         } catch (\Throwable $e) {
             return back()

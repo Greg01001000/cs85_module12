@@ -27,6 +27,9 @@ class AiContentService
     public function generateDraft(string $title, string $type = 'blog post', string $tone = 'professional'): string
     {
         $prompt = $this->buildPrompt($title, $type, $tone);
+
+        //dd(config('services.gemini.key'), config('services.gemini.url'), config('services.gemini.model'));
+
         try {
             $response = Http::withHeaders([
                 'x-goog-api-key' => config('services.gemini.key'),
@@ -38,9 +41,11 @@ class AiContentService
                 ],
                 'generationConfig' => [
                     'temperature'     => 0.7,
-                    'maxOutputTokens' => 500,
+                    'maxOutputTokens' => 1000,
                 ],
             ]);
+
+            //dd($prompt, $response->status(), $response->body());
 
             // Check for HTTP-level failures
             if (!$response->successful()) {
@@ -91,7 +96,7 @@ class AiContentService
                 - Provide 2-3 main sections with clear subheadings
                 - Include practical examples or code snippets when relevant
                 - End with a conclusion that summarizes key points
-                - Use a tone that is \"{$tone}\" and informative but approachable
+                - Use a tone that is {$tone} and informative but approachable
                 Format the response as clean markdown with proper headings and structure.",
             'meta description' => "You are an SEO expert who writes compelling meta descriptions.
                 Task: Write a meta description for a blog post titled: \"{$title}\"
@@ -100,19 +105,20 @@ class AiContentService
                 - Include relevant keywords
                 - Be compelling and clickable
                 - Accurately describe the content
-                - Use a tone that is \"{$tone}\".",
+                - Use a tone that is {$tone}.",
             'email subject line' => "You are an email marketing expert who writes compelling subject lines.
-                Task: Write an email subject line for a blog post titled: \"{$title}\"
+                Task: Write ONE email subject line for a blog post titled: \"{$title}\"
                 Requirements:
                 - Length: 40-60 characters
                 - Include relevant keywords
                 - Be compelling and clickable
                 - Accurately reflect the content
-                - Use a tone that is \"{$tone}\".",
+                - Use a tone that is {$tone}.
+                - Return ONLY the subject line text, no numbering, no alternatives, no explanation.",
             default => "You are an ancient Greek philosopher who also knows English and modern technology.
-                Task: Rephrase this topic (\"{$title}\") into philosophical terms
+                Task: Rephrase this topic, \"{$title}\", into philosophical terms
                 Requirements:
-                - Length: No more than twice the length of (\"{$title}\")
+                - Length: No more than twice the length of \"{$title}\"
                 - Write in a lively, dramatic style and tone"
         };
     }
