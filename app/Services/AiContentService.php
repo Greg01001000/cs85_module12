@@ -28,8 +28,6 @@ class AiContentService
     {
         $prompt = $this->buildPrompt($title, $type, $tone);
 
-        //dd(config('services.gemini.key'), config('services.gemini.url'), config('services.gemini.model'));
-
         try {
             $response = Http::withHeaders([
                 'x-goog-api-key' => config('services.gemini.key'),
@@ -44,8 +42,6 @@ class AiContentService
                     'maxOutputTokens' => 1000,
                 ],
             ]);
-
-            //dd($prompt, $response->status(), $response->body());
 
             // Check for HTTP-level failures
             if (!$response->successful()) {
