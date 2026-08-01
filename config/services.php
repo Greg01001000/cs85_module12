@@ -35,10 +35,10 @@ return [
         ],
     ],
 
-    'openai' => [
-        'key'   => env('OPENAI_API_KEY'),
-        'url'   => env('OPENAI_API_URL', 'https://api.openai.com/v1'),
-        'model' => env('OPENAI_MODEL', 'gpt-4o-mini'),
+    'gemini' => [
+        'key'   => env('GEMINI_API_KEY'),
+        'url'   => env('GEMINI_API_URL', 'https://generativelanguage.googleapis.com/v1beta'),
+        'model' => env('GEMINI_MODEL', 'gemini-2.5-flash'),
     ],
 
 ];
