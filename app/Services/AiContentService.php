@@ -45,24 +45,24 @@ class AiContentService
 
             // Check for HTTP-level failures
             if (!$response->successful()) {
-                Log::error('Gemini request failed', [
+                Log::error('Gemini request failed. ', [
                     'status' => $response->status(),
                     'body'   => $response->body(),
                 ]);
-                throw new \Exception('The AI request failed.');
+                throw new \Exception('The AI request failed. ');
             }
 
             // Extract content using null coalescing in case of missing keys
             $content = trim($response['candidates'][0]['content']['parts'][0]['text'] ?? '');
 
             if (empty($content)) {
-                throw new \Exception('No output received');
+                throw new \Exception('No output received. ');
             }
 
             return $content;
 
         } catch (\Throwable $e) {
-            Log::error('Gemini API communication failed', [
+            Log::error('Gemini API communication failed. ', [
                 'error'         => $e->getMessage(),
                 'prompt_length' => strlen($prompt),
             ]);
